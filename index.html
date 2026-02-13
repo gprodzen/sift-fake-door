@@ -1,0 +1,1997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sift — Your newsletters, synthesized into one piece worth reading</title>
+  <meta name="description" content="Sift reads every newsletter you subscribe to and writes you one daily briefing that's better than any of them alone. Original synthesis, not summaries.">
+  <meta property="og:title" content="Sift — Your newsletters, synthesized">
+  <meta property="og:description" content="One daily briefing from everything you subscribe to. Original thinking, not summaries.">
+  <meta property="og:type" content="website">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <script defer data-domain="trysift.com" src="https://plausible.io/js/script.js"></script>
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0a0a0c;
+      --surface: #141416;
+      --surface-raised: #1a1a1d;
+      --text: #e8e8ec;
+      --text-secondary: #8b8b96;
+      --text-tertiary: #5c5c66;
+      --border: #1e1e22;
+      --border-light: #28282e;
+      --accent: #f5f0e8;
+      --accent-hover: #e8ddd0;
+      --accent-text: #0a0a0c;
+      --citation: #7c9a6e;
+      --serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+      --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    html {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 17px;
+      line-height: 1.65;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .container-wide {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ——— Nav ——— */
+
+    nav {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+    }
+
+    .wordmark {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-desc {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      padding-left: 16px;
+      border-left: 1px solid var(--border);
+    }
+
+    /* ——— Hero ——— */
+
+    .hero {
+      padding: 80px 0 72px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-layout {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 28px 48px;
+      align-items: start;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-copy {
+      grid-column: 1;
+      grid-row: 1;
+      min-width: 0;
+    }
+
+    .hero-visual {
+      grid-column: 2;
+      grid-row: 1 / 3;
+      align-self: center;
+    }
+
+    .hero-form {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .eyebrow {
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: 48px;
+      font-weight: 500;
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      margin-bottom: 20px;
+      max-width: 600px;
+    }
+
+    .hero .subhead {
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      max-width: 520px;
+      margin-bottom: 0;
+    }
+
+    /* ——— Funnel visual ——— */
+
+    .funnel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .funnel-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      width: 100%;
+    }
+
+    .funnel-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 11px;
+      color: var(--text-tertiary);
+    }
+
+    .funnel-item .fi-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: #6366f1;
+      flex-shrink: 0;
+    }
+
+    .funnel-item .fi-name {
+      font-weight: 600;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
+    .funnel-item.faded {
+      opacity: 0.4;
+    }
+
+    .funnel-more {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      text-align: center;
+      padding: 4px 0;
+    }
+
+    .funnel-arrow {
+      color: var(--text-tertiary);
+      margin: 4px 0;
+    }
+
+    .funnel-output {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid rgba(124, 154, 110, 0.25);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+
+    .funnel-output .fo-label {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--citation);
+      margin-bottom: 6px;
+    }
+
+    .funnel-output .fo-title {
+      font-family: var(--serif);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+
+    .funnel-output .fo-meta {
+      font-size: 11px;
+      color: var(--text-tertiary);
+    }
+
+    /* ——— Orbs (Concept 1) ——— */
+
+    .orb-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -55%);
+      width: 500px;
+      height: 500px;
+      pointer-events: none;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      animation: orb-drift 8s ease-in-out infinite alternate;
+    }
+
+    .orb-1 {
+      width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.25), transparent 70%);
+      top: 20%; left: 15%;
+    }
+    .orb-2 {
+      width: 280px; height: 280px;
+      background: radial-gradient(circle, rgba(99, 149, 237, 0.2), transparent 70%);
+      top: 30%; right: 10%;
+      animation-delay: -3s; animation-duration: 10s;
+    }
+    .orb-3 {
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(245, 240, 232, 0.1), transparent 70%);
+      bottom: 20%; left: 35%;
+      animation-delay: -5s; animation-duration: 7s;
+    }
+
+    @keyframes orb-drift {
+      0% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(15px, -20px) scale(1.05); }
+      66% { transform: translate(-10px, 10px) scale(0.95); }
+      100% { transform: translate(20px, -5px) scale(1.02); }
+    }
+
+    /* ——— Forms ——— */
+
+    .signup-form {
+      margin-bottom: 16px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .form-row input[type="email"],
+    .form-row input[type="text"] {
+      flex: 1;
+      min-width: 180px;
+      padding: 14px 16px;
+      font-family: var(--sans);
+      font-size: 16px;
+      color: var(--text);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-row input::placeholder {
+      color: var(--text-tertiary);
+    }
+
+    .form-row input:focus {
+      border-color: var(--border-light);
+      box-shadow: 0 0 0 3px rgba(245, 240, 232, 0.08);
+    }
+
+    .form-row button {
+      padding: 14px 28px;
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--accent-text);
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      white-space: nowrap;
+    }
+
+    .form-row button:hover {
+      background: var(--accent-hover);
+    }
+
+    .form-row button:active {
+      transform: scale(0.98);
+    }
+
+    .form-row button:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .trust-line {
+      font-size: 13px;
+      color: var(--text-tertiary);
+    }
+
+    .success-message {
+      font-size: 17px;
+      color: var(--citation);
+      padding: 16px 0;
+    }
+
+    .form-error {
+      font-size: 14px;
+      color: #d97373;
+      margin-top: 8px;
+    }
+
+    /* honeypot */
+    .ohnohoney {
+      position: absolute;
+      left: -9999px;
+      opacity: 0;
+      height: 0;
+      width: 0;
+      overflow: hidden;
+    }
+
+    /* ——— Problem ——— */
+
+    .problem {
+      padding: 80px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .problem h2 {
+      font-family: var(--serif);
+      font-size: 32px;
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 24px;
+      max-width: 600px;
+    }
+
+    .problem p {
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin-bottom: 16px;
+    }
+
+    .problem p:last-of-type {
+      margin-bottom: 48px;
+    }
+
+    /* ——— Triage inbox (Concept 2) ——— */
+
+    .triage-inbox {
+      max-width: 640px;
+      margin: 0 auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .triage-titlebar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-raised);
+    }
+
+    .triage-titlebar-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .triage-titlebar-dots {
+      display: flex;
+      gap: 5px;
+    }
+
+    .triage-titlebar-dots span {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--border-light);
+    }
+
+    .triage-titlebar-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+    }
+
+    .triage-titlebar-time {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      font-variant-numeric: tabular-nums;
+      min-width: 60px;
+      text-align: right;
+    }
+
+    .triage-viewport {
+      height: 390px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .triage-email {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      opacity: 0;
+      transform: translateY(-8px);
+      transition: opacity 0.4s, transform 0.4s, background 0.3s;
+    }
+
+    .triage-email.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .triage-email.skimmed {
+      opacity: 0.35;
+    }
+
+    .triage-email-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .triage-email .te-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #6366f1;
+      flex-shrink: 0;
+      margin-top: 5px;
+    }
+
+    .triage-email.skimmed .te-dot {
+      background: transparent;
+    }
+
+    .triage-email .te-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .triage-email .te-from {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 1px;
+    }
+
+    .triage-email .te-subject {
+      font-size: 13px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .triage-email .te-thought {
+      font-size: 12px;
+      font-style: italic;
+      color: var(--text-tertiary);
+      margin-top: 6px;
+      padding-left: 17px;
+      opacity: 0;
+      transition: opacity 0.4s;
+      line-height: 1.45;
+    }
+
+    .triage-email.reacted .te-thought {
+      opacity: 1;
+    }
+
+    .triage-punchline {
+      text-align: center;
+      padding: 20px 16px;
+      border-top: 1px solid var(--border);
+      opacity: 0;
+      transition: opacity 0.6s;
+    }
+
+    .triage-punchline p {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.4;
+      margin-bottom: 6px;
+      max-width: none;
+    }
+
+    .triage-punchline .tp-sub {
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--text-tertiary);
+      font-weight: 400;
+    }
+
+    /* ——— Value Prop A: Deep reading ——— */
+
+    .deepread {
+      padding: 80px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .deepread h2 {
+      font-family: var(--serif);
+      font-size: 32px;
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 12px;
+      max-width: 560px;
+    }
+
+    .deepread .deepread-intro {
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      max-width: 560px;
+      margin-bottom: 40px;
+    }
+
+    .deepread-card {
+      max-width: 540px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .deepread-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-raised);
+    }
+
+    .deepread-card-header .dr-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--citation);
+    }
+
+    .deepread-card-header .dr-date {
+      font-size: 11px;
+      color: var(--text-tertiary);
+    }
+
+    .deepread-item {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .deepread-item:last-child {
+      border-bottom: none;
+    }
+
+    .deepread-item .dri-source {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 4px;
+    }
+
+    .deepread-item .dri-title {
+      font-family: var(--serif);
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.35;
+      margin-bottom: 6px;
+    }
+
+    .deepread-item .dri-why {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .deepread-item .dri-time {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      color: var(--text-tertiary);
+      margin-top: 8px;
+    }
+
+    .deepread-card-footer {
+      padding: 12px 20px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+
+    /* ——— Value Prop B: Deduplication (Threading) ——— */
+
+    .threading {
+      padding: 80px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .threading h2 {
+      font-family: var(--serif);
+      font-size: 32px;
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 12px;
+      max-width: 600px;
+    }
+
+    .threading .threading-intro {
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      max-width: 560px;
+      margin-bottom: 40px;
+    }
+
+    .threading-wrapper {
+      width: 100%;
+      max-width: 720px;
+    }
+
+    .threading-story-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .threading-headline {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--text);
+      text-align: center;
+      margin-bottom: 32px;
+      line-height: 1.3;
+    }
+
+    .threading-sources {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .threading-source {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .threading-source .ts-name {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+    }
+
+    .threading-source .ts-take {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .threading-source .ts-angle {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      margin-top: 8px;
+      font-style: italic;
+    }
+
+    .threading-source .ts-name-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .threading-source .ts-overlap-badge {
+      font-size: 10px;
+      font-weight: 600;
+      color: #b8860b;
+      background: rgba(184, 134, 11, 0.12);
+      border: 1px solid rgba(184, 134, 11, 0.2);
+      padding: 2px 8px;
+      border-radius: 10px;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+
+    .threading-arrow-down {
+      display: flex;
+      justify-content: center;
+      padding: 8px 0;
+    }
+
+    .threading-arrow-down svg {
+      color: var(--text-tertiary);
+    }
+
+    .threading-synthesis {
+      background: var(--surface);
+      border: 1px solid rgba(124, 154, 110, 0.25);
+      border-radius: 12px;
+      padding: 24px;
+      position: relative;
+    }
+
+    .threading-synthesis .ts-badge {
+      position: absolute;
+      top: -8px;
+      left: 20px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--citation);
+      background: var(--bg);
+      padding: 2px 10px;
+    }
+
+    .threading-synthesis .ts-synth-text {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      margin-bottom: 10px;
+    }
+
+    .threading-synthesis .ts-synth-text strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .threading-synthesis .ts-deep-read {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent);
+      margin-top: 8px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .threading-synthesis .ts-deep-read:hover {
+      text-decoration: underline;
+    }
+
+    .threading-synthesis .ts-sources-line {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ——— Coverage / Complete Picture (Concept 4) ——— */
+
+    .coverage {
+      padding: 80px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .coverage h2 {
+      font-family: var(--serif);
+      font-size: 32px;
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .coverage .coverage-intro {
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin-bottom: 48px;
+    }
+
+    .coverage-layout {
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .coverage-side {
+      flex: 1;
+      min-width: 300px;
+      max-width: 480px;
+    }
+
+    .coverage-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 16px;
+    }
+
+    .coverage-scattered {
+      position: relative;
+      min-height: 380px;
+    }
+
+    .coverage-fragment {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 14px;
+      position: absolute;
+      max-width: 220px;
+      transition: opacity 0.3s;
+    }
+
+    .coverage-fragment .cf-source {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 3px;
+    }
+
+    .coverage-fragment .cf-snippet {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.45;
+    }
+
+    .coverage-fragment .cf-tag {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 3px;
+      margin-top: 6px;
+    }
+
+    .cf-tag.ai { background: rgba(99, 102, 241, 0.15); color: #818cf8; }
+    .cf-tag.infra { background: rgba(124, 154, 110, 0.15); color: var(--citation); }
+    .cf-tag.market { background: rgba(184, 134, 11, 0.15); color: #d4a843; }
+    .cf-tag.policy { background: rgba(220, 80, 80, 0.15); color: #e88; }
+
+    .coverage-complete {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+
+    .coverage-complete .cc-header {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .coverage-section {
+      margin-bottom: 20px;
+    }
+
+    .coverage-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .coverage-section .cs-tag {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 3px;
+      margin-bottom: 6px;
+    }
+
+    .coverage-section .cs-title {
+      font-family: var(--serif);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+
+    .coverage-section .cs-preview {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .coverage-section .cs-sources {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      margin-top: 4px;
+    }
+
+    .coverage-section .cs-read-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--citation);
+      margin-top: 6px;
+      cursor: pointer;
+    }
+
+    .coverage-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 16px 0;
+    }
+
+    .coverage-complete .cc-footer {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 16px;
+    }
+
+    /* ——— Synthesis (Concept 5) ——— */
+
+    .different {
+      padding: 80px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .different h2 {
+      font-family: var(--serif);
+      font-size: 32px;
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 24px;
+    }
+
+    .different p {
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin-bottom: 48px;
+    }
+
+    .synthesis-wrapper {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .synthesis-sources {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .synthesis-source-chip {
+      font-size: 12px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-tertiary);
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.4s, transform 0.4s, border-color 0.4s, color 0.4s;
+    }
+
+    .synthesis-source-chip.visible { opacity: 1; transform: translateY(0); }
+    .synthesis-source-chip.active { border-color: var(--border-light); color: var(--text-secondary); }
+    .synthesis-source-chip.done { border-color: rgba(124, 154, 110, 0.3); color: var(--citation); }
+
+    .synthesis-progress {
+      width: 100%;
+      height: 2px;
+      background: var(--surface);
+      border-radius: 1px;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .synthesis-progress-fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--citation), rgba(124, 154, 110, 0.4));
+      border-radius: 1px;
+      transition: width 0.3s ease;
+    }
+
+    .synthesis-status {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-tertiary);
+      margin-bottom: 20px;
+      min-height: 18px;
+    }
+
+    .synthesis-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px 28px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+
+    .synthesis-card .sc-header {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .synthesis-card .sc-headline {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 500;
+      line-height: 1.3;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    .synthesis-card .sc-text {
+      font-size: 14px;
+      line-height: 1.65;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+    }
+
+    .synthesis-card .sc-citation {
+      font-size: 12px;
+      color: var(--citation);
+      font-style: italic;
+      margin-bottom: 16px;
+    }
+
+    .synthesis-card .sc-deep-read {
+      background: rgba(124, 154, 110, 0.08);
+      border: 1px solid rgba(124, 154, 110, 0.2);
+      border-radius: 8px;
+      padding: 12px 16px;
+    }
+
+    .synthesis-card .sc-deep-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--citation);
+      margin-bottom: 6px;
+    }
+
+    .synthesis-card .sc-deep-item {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      padding: 4px 0;
+    }
+
+    .synthesis-card .sc-deep-item strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .synthesis-card .sc-deep-item .arrow {
+      color: var(--citation);
+      margin-left: 4px;
+    }
+
+    .sc-reveal {
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.6s, transform 0.6s;
+    }
+
+    .sc-reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .synthesis-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1em;
+      background: var(--accent);
+      margin-left: 2px;
+      vertical-align: text-bottom;
+      animation: cursor-blink 0.8s step-end infinite;
+    }
+
+    @keyframes cursor-blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .synthesis-restart {
+      display: block;
+      margin: 20px auto 0;
+      padding: 8px 20px;
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--text-secondary);
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .synthesis-restart:hover {
+      border-color: var(--border-light);
+      color: var(--text);
+    }
+
+    /* ——— Final CTA ——— */
+
+    .final-cta {
+      padding: 80px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .final-cta h2 {
+      font-family: var(--serif);
+      font-size: 36px;
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .final-cta .final-sub {
+      font-size: 17px;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+    }
+
+    /* ——— Footer ——— */
+
+    footer {
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    footer p {
+      font-size: 13px;
+      color: var(--text-tertiary);
+    }
+
+    /* ——— Responsive ——— */
+
+    @media (max-width: 640px) {
+      .hero {
+        padding: 64px 0 56px;
+      }
+
+      .hero-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+      }
+
+      .hero-visual {
+        width: 100%;
+        max-width: 280px;
+        order: 0;
+      }
+
+      .hero h1 {
+        font-size: 36px;
+      }
+
+      .hero .subhead {
+        font-size: 17px;
+      }
+
+      .form-row {
+        flex-direction: column;
+      }
+
+      .form-row input[type="email"],
+      .form-row input[type="text"] {
+        min-width: 100%;
+      }
+
+      .form-row button {
+        width: 100%;
+        text-align: center;
+      }
+
+      .problem, .deepread, .threading, .coverage, .different, .final-cta {
+        padding: 56px 0;
+      }
+
+      .problem h2, .deepread h2, .threading h2, .coverage h2, .different h2 {
+        font-size: 26px;
+      }
+
+      .final-cta h2 {
+        font-size: 28px;
+      }
+
+      .container, .container-wide {
+        padding: 0 20px;
+      }
+
+      .threading-sources {
+        grid-template-columns: 1fr;
+      }
+
+      .coverage-layout {
+        flex-direction: column;
+      }
+
+      .coverage-side {
+        max-width: 100%;
+      }
+
+      .coverage-scattered {
+        min-height: 320px;
+      }
+
+      .coverage-fragment {
+        max-width: 180px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <div class="nav-inner">
+      <span class="wordmark">Sift</span>
+      <span class="nav-desc">Your focus is too valuable to waste on skimming.</span>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="orb-container">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+    </div>
+    <div class="hero-layout">
+      <div class="hero-copy">
+        <p class="eyebrow">For readers who refuse to skim</p>
+        <h1>You don't need to read them all. You need to know which ones&nbsp;matter.</h1>
+        <p class="subhead">Sift reads every newsletter in your inbox and tells you what's actually worth your attention&mdash;the full picture, the connections across sources, and which pieces deserve a deep read.</p>
+      </div>
+      <div class="hero-visual">
+        <div class="funnel">
+          <div class="funnel-stack">
+            <div class="funnel-item">
+              <span class="fi-dot"></span>
+              <span class="fi-name">Stratechery</span>
+              <span>The Infrastructure Inv...</span>
+            </div>
+            <div class="funnel-item">
+              <span class="fi-dot"></span>
+              <span class="fi-name">The Information</span>
+              <span>Cloud Capex Hits $200B</span>
+            </div>
+            <div class="funnel-item">
+              <span class="fi-dot"></span>
+              <span class="fi-name">Import AI</span>
+              <span>#347: Open-weight mo...</span>
+            </div>
+            <div class="funnel-item faded">
+              <span class="fi-dot"></span>
+              <span class="fi-name">Lenny's</span>
+              <span>How Stripe rebuilt bill...</span>
+            </div>
+            <div class="funnel-item faded">
+              <span class="fi-dot"></span>
+              <span class="fi-name">Morning Brew</span>
+              <span>Your daily roundup</span>
+            </div>
+          </div>
+          <p class="funnel-more">+7 more newsletters</p>
+          <svg class="funnel-arrow" width="24" height="28" viewBox="0 0 24 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <path d="M12 2v20M7 17l5 5 5-5"/>
+          </svg>
+          <div class="funnel-output">
+            <div class="fo-label">Your morning Sift</div>
+            <div class="fo-title">Infrastructure spending pivots from cost center to strategic moat</div>
+            <div class="fo-meta">3 topics &middot; 12 sources &middot; 2 deep reads</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-form">
+        <form name="waitlist" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" class="signup-form" id="hero-form">
+          <input type="hidden" name="form-name" value="waitlist">
+          <div class="ohnohoney"><input name="bot-field"></div>
+          <input type="hidden" name="price_shown" value="9">
+          <div class="form-row">
+            <input type="email" name="email" required placeholder="you@example.com" autocomplete="email">
+            <input type="text" name="name" placeholder="First name (optional)" autocomplete="given-name">
+            <button type="submit">Apply for early access &mdash; $9/mo intro pricing</button>
+          </div>
+        </form>
+        <p class="trust-line">No credit card required. Lock in your rate before launch.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Problem (Concept 2: triage inbox animation) -->
+  <section class="problem" id="triage-section">
+    <div class="container">
+      <h2>You signed up because each one seemed valuable. They still are. You just can't keep up.</h2>
+      <p>The problem isn't the content. It's the volume, the repetition, and the impossible cognitive cost of context-switching between twenty different voices covering the same shifting landscape.</p>
+
+      <div class="triage-inbox" id="triage-inbox">
+        <div class="triage-titlebar">
+          <div class="triage-titlebar-left">
+            <div class="triage-titlebar-dots"><span></span><span></span><span></span></div>
+            <span class="triage-titlebar-label">Inbox</span>
+          </div>
+          <span class="triage-titlebar-time" id="triage-timer">0:00</span>
+        </div>
+        <div class="triage-viewport">
+          <div class="triage-email" data-delay="0" data-react="600" data-skim="true" data-mins="2">
+            <div class="triage-email-top">
+              <span class="te-dot"></span>
+              <div class="te-body">
+                <div class="te-from">Morning Brew</div>
+                <div class="te-subject">Your daily business news roundup &mdash; Feb 13</div>
+              </div>
+            </div>
+            <div class="te-thought">Already saw all of this on Twitter. Close.</div>
+          </div>
+          <div class="triage-email" data-delay="800" data-react="1400" data-skim="false" data-mins="5">
+            <div class="triage-email-top">
+              <span class="te-dot"></span>
+              <div class="te-body">
+                <div class="te-from">Stratechery</div>
+                <div class="te-subject">The Infrastructure Inversion</div>
+              </div>
+            </div>
+            <div class="te-thought">3,200 words. Looks important. Starred for later&hellip; again.</div>
+          </div>
+          <div class="triage-email" data-delay="1800" data-react="2400" data-skim="true" data-mins="8">
+            <div class="triage-email-top">
+              <span class="te-dot"></span>
+              <div class="te-body">
+                <div class="te-from">The Information</div>
+                <div class="te-subject">Cloud Capex Hits $200B as Hyperscalers Double Down</div>
+              </div>
+            </div>
+            <div class="te-thought">Wait, didn't I just read this? Three minutes I won't get back.</div>
+          </div>
+          <div class="triage-email" data-delay="2800" data-react="3400" data-skim="true" data-mins="11">
+            <div class="triage-email-top">
+              <span class="te-dot"></span>
+              <div class="te-body">
+                <div class="te-from">Import AI</div>
+                <div class="te-subject">#347: Open-weight models and the narrowing gap</div>
+              </div>
+            </div>
+            <div class="te-thought">Good data, but I've seen this argument building for weeks. Skimmed.</div>
+          </div>
+          <div class="triage-email" data-delay="3800" data-react="4400" data-skim="false" data-mins="14">
+            <div class="triage-email-top">
+              <span class="te-dot"></span>
+              <div class="te-body">
+                <div class="te-from">Lenny's Newsletter</div>
+                <div class="te-subject">How Stripe rebuilt billing for AI-first companies</div>
+              </div>
+            </div>
+            <div class="te-thought">This looks actually relevant. But I'm out of time.</div>
+          </div>
+          <div class="triage-email" data-delay="4800" data-react="5200" data-skim="true" data-mins="16">
+            <div class="triage-email-top">
+              <span class="te-dot"></span>
+              <div class="te-body">
+                <div class="te-from">TLDR Newsletter</div>
+                <div class="te-subject">TLDR Tech: top stories for Feb 13</div>
+              </div>
+            </div>
+            <div class="te-thought">Summaries of things I already skimmed. Why am I still here?</div>
+          </div>
+        </div>
+        <div class="triage-punchline" id="triage-punchline">
+          <p>16 minutes spent skimming that you could have spent reading deeply&mdash;if you only knew which ones were worth your time today.</p>
+          <p class="tp-sub">And you have 24 more to go.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Value Prop A: Deep reading -->
+  <section class="deepread">
+    <div class="container">
+      <p class="eyebrow">What Sift does</p>
+      <h2>Spend your reading time reading.</h2>
+      <p class="deepread-intro">Sift reads every newsletter overnight and tells you which pieces deserve your full, deep attention today. No skimming required. You open your briefing, see what matters, and go straight to the source.</p>
+
+      <div class="deepread-card">
+        <div class="deepread-card-header">
+          <span class="dr-label">Your deep reads for today</span>
+          <span class="dr-date">Feb 13, 2026</span>
+        </div>
+        <div class="deepread-item">
+          <div class="dri-source">Stratechery</div>
+          <div class="dri-title">The Infrastructure Inversion</div>
+          <div class="dri-why">Original framework on why infrastructure spending is being reframed as competitive moat. Not covered elsewhere at this depth. Thompson's most consequential piece this month.</div>
+          <div class="dri-time">12 min read &rarr;</div>
+        </div>
+        <div class="deepread-item">
+          <div class="dri-source">Lenny's Newsletter</div>
+          <div class="dri-title">How Stripe rebuilt billing for AI-first companies</div>
+          <div class="dri-why">First-hand product case study on consumption-based pricing. Exclusive reporting, directly relevant if you're building or buying SaaS.</div>
+          <div class="dri-time">8 min read &rarr;</div>
+        </div>
+        <div class="deepread-card-footer">2 of 30 newsletters. The other 28 were redundant, derivative, or not worth your time today.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Value Prop B: Deduplication -->
+  <section class="threading">
+    <div class="container">
+      <p class="eyebrow">Across your sources</p>
+      <h2>The same story showed up in four newsletters. You only need to read it&nbsp;once.</h2>
+      <p class="threading-intro">News ricochets across your inbox. The same event gets covered by every source from a different angle, at a different depth. Sift reads all of them, extracts what's original, and gives you one clear picture with every source attributed.</p>
+
+      <div class="threading-wrapper">
+
+        <p class="threading-story-label">One story across four sources</p>
+        <h3 class="threading-headline">Cloud infrastructure spending crosses $200B</h3>
+
+        <div class="threading-sources">
+          <div class="threading-source">
+            <div class="ts-name-row">
+              <div class="ts-name">Stratechery</div>
+              <span class="ts-overlap-badge">Overlap</span>
+            </div>
+            <div class="ts-take">3,200-word essay on why infrastructure is becoming a strategic moat, not a cost center. Original framework.</div>
+            <div class="ts-angle">Angle: competitive strategy</div>
+          </div>
+          <div class="threading-source">
+            <div class="ts-name-row">
+              <div class="ts-name">The Information</div>
+              <span class="ts-overlap-badge">Overlap</span>
+            </div>
+            <div class="ts-take">Exclusive data on AWS and Azure capex commitments. $200B figure sourced here. Short, factual.</div>
+            <div class="ts-angle">Angle: exclusive data</div>
+          </div>
+          <div class="threading-source">
+            <div class="ts-name-row">
+              <div class="ts-name">Benedict Evans</div>
+              <span class="ts-overlap-badge">Overlap</span>
+            </div>
+            <div class="ts-take">Historical context on infrastructure cycles. Comparison to 1990s telecom buildout. Charts.</div>
+            <div class="ts-angle">Angle: historical pattern</div>
+          </div>
+          <div class="threading-source">
+            <div class="ts-name-row">
+              <div class="ts-name">Pragmatic Engineer</div>
+              <span class="ts-overlap-badge">Overlap</span>
+            </div>
+            <div class="ts-take">Two paragraphs in a longer roundup. Mentions the $200B figure without analysis. Links to The Information.</div>
+            <div class="ts-angle">Angle: news mention (derivative)</div>
+          </div>
+        </div>
+
+        <div class="threading-arrow-down">
+          <svg width="24" height="32" viewBox="0 0 24 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <path d="M12 4v22M6 20l6 6 6-6"/>
+          </svg>
+        </div>
+
+        <div class="threading-synthesis">
+          <div class="ts-badge">Sift synthesis</div>
+          <p class="ts-synth-text"><strong>Cloud infrastructure spending is being reframed from cost center to strategic moat.</strong> Combined hyperscaler commitments now exceed $200B annually (The Information), a figure that echoes 1990s telecom buildout patterns (Evans). The competitive framing &mdash; that infrastructure spend is offensive, not defensive &mdash; is original to Thompson's analysis and likely the most consequential read this week on the topic.</p>
+          <span class="ts-deep-read">Read the Stratechery piece in full &rarr;</span>
+          <div class="ts-sources-line">Synthesized from 4 sources &middot; Stratechery recommended for the original framework</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The complete picture (Concept 4) -->
+  <section class="coverage">
+    <div class="container-wide">
+      <p class="eyebrow">What you get</p>
+      <h2>The complete picture, every morning.</h2>
+      <p class="coverage-intro">Sift ingests your newsletters overnight and synthesizes them into a single briefing where every claim traces back to its source. Not summaries&mdash;original editorial analysis that draws connections across your sources and tells you what's worth reading in full.</p>
+
+      <div class="coverage-layout">
+        <div class="coverage-side">
+          <p class="coverage-label">Scattered across your inbox</p>
+          <div class="coverage-scattered">
+            <div class="coverage-fragment" style="top: 0; left: 0;">
+              <div class="cf-source">Stratechery</div>
+              <div class="cf-snippet">Infrastructure as strategic moat, not cost center...</div>
+              <span class="cf-tag infra">Infra</span>
+            </div>
+            <div class="coverage-fragment" style="top: 10%; left: 52%;">
+              <div class="cf-source">Import AI</div>
+              <div class="cf-snippet">Llama-4 benchmarks at 94% of frontier models...</div>
+              <span class="cf-tag ai">AI Models</span>
+            </div>
+            <div class="coverage-fragment" style="top: 28%; left: 8%;">
+              <div class="cf-source">The Information</div>
+              <div class="cf-snippet">Hyperscaler capex hits $200B combined...</div>
+              <span class="cf-tag infra">Infra</span>
+            </div>
+            <div class="coverage-fragment" style="top: 38%; left: 46%;">
+              <div class="cf-source">Lenny's</div>
+              <div class="cf-snippet">Stripe's new AI billing primitives...</div>
+              <span class="cf-tag market">Product</span>
+            </div>
+            <div class="coverage-fragment" style="top: 56%; left: 2%;">
+              <div class="cf-source">Benedict Evans</div>
+              <div class="cf-snippet">Historical comparison to '90s telecom buildout...</div>
+              <span class="cf-tag infra">Infra</span>
+            </div>
+            <div class="coverage-fragment" style="top: 60%; left: 50%;">
+              <div class="cf-source">The Gradient</div>
+              <div class="cf-snippet">Open-weight performance curves are steeper than expected...</div>
+              <span class="cf-tag ai">AI Models</span>
+            </div>
+            <div class="coverage-fragment" style="top: 78%; left: 14%;">
+              <div class="cf-source">Pragmatic Eng.</div>
+              <div class="cf-snippet">Brief mention of $200B capex (links to The Information)...</div>
+              <span class="cf-tag infra">Infra</span>
+            </div>
+            <div class="coverage-fragment" style="top: 82%; left: 52%;">
+              <div class="cf-source">TLDR</div>
+              <div class="cf-snippet">One-line: "Anthropic raises $2B at $61B valuation"</div>
+              <span class="cf-tag market">Market</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="coverage-side">
+          <p class="coverage-label">Your morning Sift</p>
+          <div class="coverage-complete">
+            <div class="cc-header">Complete coverage &middot; 3 topics &middot; 12 sources</div>
+
+            <div class="coverage-section">
+              <span class="cs-tag infra">Infra</span>
+              <div class="cs-title">Infrastructure spending pivots from cost center to strategic moat</div>
+              <div class="cs-preview">Synthesized from 4 sources. Original $200B figure from The Information; strategic framing from Thompson.</div>
+              <div class="cs-sources">Stratechery, The Information, Benedict Evans, Pragmatic Engineer</div>
+              <div class="cs-read-link">Read Stratechery's full analysis &rarr;</div>
+            </div>
+
+            <div class="coverage-divider"></div>
+
+            <div class="coverage-section">
+              <span class="cs-tag ai">AI Models</span>
+              <div class="cs-title">Open-weight models closing the gap at 4-6 month cadence</div>
+              <div class="cs-preview">Benchmark data from Import AI, performance curves from The Gradient. Consensus forming that the moat-through-model-quality thesis is weakening.</div>
+              <div class="cs-sources">Import AI, The Gradient, One Useful Thing</div>
+              <div class="cs-read-link">Skim Import AI's data tables &rarr;</div>
+            </div>
+
+            <div class="coverage-divider"></div>
+
+            <div class="coverage-section">
+              <span class="cs-tag market">Product &amp; Market</span>
+              <div class="cs-title">Stripe launches AI-native billing; Anthropic closes $2B round</div>
+              <div class="cs-preview">Lenny's piece on Stripe is original reporting, not covered elsewhere. Anthropic raise is factual &mdash; no analysis needed.</div>
+              <div class="cs-sources">Lenny's Newsletter, TLDR, TechCrunch</div>
+              <div class="cs-read-link">Read Lenny's Stripe deep-dive &rarr;</div>
+            </div>
+
+            <div class="cc-footer">3 topics identified &middot; 4 redundant mentions collapsed &middot; 2 deep reads recommended</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Synthesis animation (Concept 5) -->
+  <section class="different">
+    <div class="container">
+      <h2>Synthesis, not summaries.</h2>
+      <p>Sift reads everything together, identifies the events and arguments that actually matter, deduplicates overlapping coverage, and writes one editorial briefing where every claim traces back to its source. The result reads like it was written by a thoughtful analyst who happens to subscribe to exactly what you do.</p>
+
+      <div class="synthesis-wrapper">
+
+        <div class="synthesis-sources" id="synth-sources">
+          <span class="synthesis-source-chip" data-delay="0">Stratechery</span>
+          <span class="synthesis-source-chip" data-delay="300">The Information</span>
+          <span class="synthesis-source-chip" data-delay="600">Benedict Evans</span>
+          <span class="synthesis-source-chip" data-delay="900">Import AI</span>
+          <span class="synthesis-source-chip" data-delay="1200">Lenny's Newsletter</span>
+          <span class="synthesis-source-chip" data-delay="1500">Pragmatic Engineer</span>
+          <span class="synthesis-source-chip" data-delay="1800">One Useful Thing</span>
+          <span class="synthesis-source-chip" data-delay="2100">The Gradient</span>
+        </div>
+
+        <div class="synthesis-progress">
+          <div class="synthesis-progress-fill" id="synth-progress"></div>
+        </div>
+
+        <div class="synthesis-status" id="synth-status"></div>
+
+        <div class="synthesis-card" id="synth-card">
+          <div class="sc-header sc-reveal">
+            <span>Thursday, Feb 13, 2026</span>
+            <span>Your morning briefing</span>
+          </div>
+          <div class="sc-headline sc-reveal" id="synth-headline"></div>
+          <p class="sc-text sc-reveal" id="synth-body"></p>
+          <p class="sc-citation sc-reveal" id="synth-cite"></p>
+          <div class="sc-deep-read sc-reveal" id="synth-deep">
+            <div class="sc-deep-label">Worth reading in full</div>
+            <div class="sc-deep-item"><strong>Stratechery</strong> &mdash; The Infrastructure Inversion <span class="arrow">&rarr;</span></div>
+            <div class="sc-deep-item"><strong>Lenny's Newsletter</strong> &mdash; How Stripe rebuilt billing <span class="arrow">&rarr;</span></div>
+          </div>
+        </div>
+
+        <button class="synthesis-restart" id="synth-restart">Replay animation</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="final-cta">
+    <div class="container">
+      <h2>Know what matters. Read what's worth&nbsp;it.</h2>
+      <p class="final-sub">Apply for early access and let Sift do the triage.</p>
+
+      <form name="waitlist" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" class="signup-form" id="footer-form">
+        <input type="hidden" name="form-name" value="waitlist">
+        <div class="ohnohoney"><input name="bot-field"></div>
+        <input type="hidden" name="price_shown" value="9">
+        <div class="form-row">
+          <input type="email" name="email" required placeholder="you@example.com" autocomplete="email">
+          <input type="text" name="name" placeholder="First name (optional)" autocomplete="given-name">
+          <button type="submit">Apply for early access &mdash; $9/mo intro pricing</button>
+        </div>
+      </form>
+      <p class="trust-line">No credit card required. Lock in your rate before launch.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Sift</p>
+    </div>
+  </footer>
+
+  <script>
+    /* ——— Form submission ——— */
+    document.querySelectorAll('.signup-form').forEach(function(form) {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var btn = form.querySelector('button[type="submit"]');
+        var originalText = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = 'Applying\u2026';
+
+        var formData = new FormData(form);
+        var encoded = new URLSearchParams(formData).toString();
+
+        fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: encoded
+        })
+        .then(function(response) {
+          if (response.ok) {
+            form.innerHTML = '<p class="success-message">Application received. We\u2019ll be in touch soon.</p>';
+          } else {
+            throw new Error('fail');
+          }
+        })
+        .catch(function() {
+          btn.disabled = false;
+          btn.textContent = originalText;
+          var err = form.querySelector('.form-error');
+          if (!err) {
+            err = document.createElement('p');
+            err.className = 'form-error';
+            form.appendChild(err);
+          }
+          err.textContent = 'Something went wrong. Please try again.';
+        });
+      });
+    });
+
+    /* ——— Triage inbox animation ——— */
+    (function() {
+      var emails = document.querySelectorAll('.triage-email');
+      var punchline = document.getElementById('triage-punchline');
+      var timerEl = document.getElementById('triage-timer');
+      var timerInterval = null;
+      var timerSeconds = 0;
+
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            runTriage();
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
+
+      observer.observe(document.getElementById('triage-inbox'));
+
+      function startTimer() {
+        timerSeconds = 0;
+        timerEl.textContent = '0:00';
+        timerInterval = setInterval(function() {
+          timerSeconds++;
+          var mins = Math.floor(timerSeconds / 60);
+          var secs = timerSeconds % 60;
+          timerEl.textContent = mins + ':' + (secs < 10 ? '0' : '') + secs;
+        }, 375);
+      }
+
+      function stopTimer(displayMins) {
+        clearInterval(timerInterval);
+        timerEl.textContent = displayMins + ':00';
+      }
+
+      function runTriage() {
+        startTimer();
+
+        emails.forEach(function(email) {
+          var showDelay = parseInt(email.getAttribute('data-delay'));
+          var reactDelay = parseInt(email.getAttribute('data-react'));
+          var shouldSkim = email.getAttribute('data-skim') === 'true';
+
+          setTimeout(function() {
+            email.classList.add('visible');
+          }, showDelay);
+
+          setTimeout(function() {
+            email.classList.add('reacted');
+          }, reactDelay);
+
+          if (shouldSkim) {
+            setTimeout(function() {
+              email.classList.add('skimmed');
+            }, reactDelay + 500);
+          }
+        });
+
+        var lastReact = 5200;
+        setTimeout(function() {
+          stopTimer(16);
+          punchline.style.opacity = '1';
+        }, lastReact + 800);
+      }
+    })();
+
+    /* ——— Concept 5: Synthesis animation ——— */
+    (function() {
+      var sources = document.querySelectorAll('.synthesis-source-chip');
+      var progress = document.getElementById('synth-progress');
+      var status = document.getElementById('synth-status');
+      var headline = document.getElementById('synth-headline');
+      var body = document.getElementById('synth-body');
+      var cite = document.getElementById('synth-cite');
+      var deep = document.getElementById('synth-deep');
+      var reveals = document.querySelectorAll('.sc-reveal');
+      var restartBtn = document.getElementById('synth-restart');
+
+      var headlineText = 'Infrastructure spending pivots from cost center to strategic moat as AI adoption accelerates';
+      var bodyText = 'Four of your sources covered the hyperscaler earnings calls this week. The consistent thread none named explicitly: infrastructure spending is being reframed from defensive necessity to offensive competitive advantage. Thompson\'s essay builds the most original framework; The Information has the exclusive data. Evans provides useful historical context but the core insight is covered in the first two.';
+      var citeText = 'Seen in: Stratechery, The Information, Benedict Evans, Pragmatic Engineer';
+
+      var statusMessages = [
+        'Reading Stratechery\u2026',
+        'Reading The Information\u2026',
+        'Cross-referencing 8 sources\u2026',
+        'Identifying overlapping coverage\u2026',
+        'Deduplicating 4 mentions of $200B capex\u2026',
+        'Synthesizing briefing\u2026',
+        'Ranking sources by originality\u2026',
+        'Done \u2014 2 pieces worth reading in full'
+      ];
+
+      var timeouts = [];
+
+      function reset() {
+        timeouts.forEach(clearTimeout);
+        timeouts = [];
+        sources.forEach(function(s) { s.className = 'synthesis-source-chip'; });
+        progress.style.width = '0';
+        status.textContent = '';
+        headline.textContent = '';
+        body.textContent = '';
+        cite.textContent = '';
+        reveals.forEach(function(r) { r.classList.remove('visible'); });
+      }
+
+      function typeText(el, text, speed, callback) {
+        var i = 0;
+        function tick() {
+          if (i <= text.length) {
+            el.textContent = text.slice(0, i);
+            var cursor = document.createElement('span');
+            cursor.className = 'synthesis-cursor';
+            el.appendChild(cursor);
+            i++;
+            timeouts.push(setTimeout(tick, speed));
+          } else {
+            el.textContent = text;
+            if (callback) callback();
+          }
+        }
+        tick();
+      }
+
+      function runAnimation() {
+        reset();
+
+        sources.forEach(function(chip, idx) {
+          timeouts.push(setTimeout(function() {
+            chip.classList.add('visible');
+          }, idx * 280));
+
+          timeouts.push(setTimeout(function() {
+            chip.classList.add('active');
+            progress.style.width = ((idx + 1) / sources.length * 60) + '%';
+            if (idx < statusMessages.length - 1) {
+              status.textContent = statusMessages[idx];
+            }
+          }, idx * 280 + 200));
+        });
+
+        var sourcesDone = sources.length * 280 + 400;
+
+        timeouts.push(setTimeout(function() {
+          status.textContent = statusMessages[4];
+          progress.style.width = '70%';
+        }, sourcesDone));
+
+        timeouts.push(setTimeout(function() {
+          status.textContent = statusMessages[5];
+          progress.style.width = '85%';
+          sources.forEach(function(s) { s.classList.add('done'); });
+        }, sourcesDone + 600));
+
+        timeouts.push(setTimeout(function() {
+          status.textContent = statusMessages[6];
+          progress.style.width = '95%';
+          reveals[0].classList.add('visible');
+        }, sourcesDone + 1200));
+
+        timeouts.push(setTimeout(function() {
+          reveals[1].classList.add('visible');
+          typeText(headline, headlineText, 22, function() {
+            reveals[2].classList.add('visible');
+            typeText(body, bodyText, 10, function() {
+              reveals[3].classList.add('visible');
+              cite.textContent = citeText;
+              progress.style.width = '100%';
+              status.textContent = statusMessages[7];
+
+              timeouts.push(setTimeout(function() {
+                reveals[4].classList.add('visible');
+              }, 400));
+            });
+          });
+        }, sourcesDone + 1800));
+      }
+
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            runAnimation();
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.2 });
+
+      observer.observe(document.querySelector('.synthesis-wrapper'));
+
+      restartBtn.addEventListener('click', function() {
+        runAnimation();
+      });
+    })();
+  </script>
+</body>
+</html>
